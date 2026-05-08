@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Best of Luck - DBMS Practicals</title>
   <style>
-    /* [Keep all your original CSS exactly the same - no changes needed] */
     * {
       margin: 0;
       padding: 0;
@@ -17,24 +16,292 @@
       background: #0d1117;
       color: #c9d1d9;
       padding: 20px;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
       transition: background 0.3s, color 0.3s;
     }
 
-    /* ... [all your original CSS stays exactly the same] ... */
-    /* [I won't repeat the full CSS here to save space, but keep it unchanged] */
+    body.light {
+      background: #ffffff;
+      color: #24292f;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #30363d;
+    }
+
+    body.light .header {
+      border-bottom-color: #d0d7de;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #c9d1d9;
+    }
+
+    body.light .header h1 {
+      color: #24292f;
+    }
+
+    .theme-toggle {
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: #30363d;
+    }
+
+    body.light .theme-toggle {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+      color: #24292f;
+    }
+
+    body.light .theme-toggle:hover {
+      background: #e1e4e8;
+    }
+
+    /* **NEW: Main container with scroll** */
+    .main-container {
+      height: calc(100vh - 120px);
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    .main-container::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .main-container::-webkit-scrollbar-track {
+      background: #21262d;
+      border-radius: 4px;
+    }
+
+    body.light .main-container::-webkit-scrollbar-track {
+      background: #f6f8fa;
+    }
+
+    .main-container::-webkit-scrollbar-thumb {
+      background: #58a6ff;
+      border-radius: 4px;
+    }
+
+    body.light .main-container::-webkit-scrollbar-thumb {
+      background: #0969da;
+    }
+
+    /* **Cards layout - now vertical with scroll** */
+    .cards-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-width: 1200px;
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 20px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      max-width: 100%;
+    }
+
+    .card:hover {
+      border-color: #58a6ff;
+      box-shadow: 0 4px 12px rgba(88, 166, 255, 0.2);
+    }
+
+    body.light .card {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+    }
+
+    body.light .card:hover {
+      border-color: #0969da;
+      box-shadow: 0 4px 12px rgba(9, 105, 218, 0.2);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 16px;
+      color: #c9d1d9;
+    }
+
+    body.light .card-title {
+      color: #24292f;
+    }
+
+    .copy-btn {
+      background: #238636;
+      border: none;
+      color: #ffffff;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s;
+      box-shadow: 0 2px 4px rgba(35, 134, 54, 0.3);
+    }
+
+    .copy-btn:hover {
+      background: #2ea043;
+      transform: translateY(-1px);
+    }
+
+    .copy-btn.copied {
+      background: #1f6feb;
+      box-shadow: 0 2px 4px rgba(31, 111, 235, 0.3);
+    }
+
+    body.light .copy-btn {
+      background: #1a7f37;
+    }
+
+    body.light .copy-btn:hover {
+      background: #2da44e;
+    }
+
+    body.light .copy-btn.copied {
+      background: #0969da;
+    }
+
+    /* **IMPROVED: Scrollable code container** */
+    .code-container {
+      background: #000000;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      max-height: 400px;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding: 16px;
+      position: relative;
+    }
+
+    body.light .code-container {
+      border-color: #d0d7de;
+    }
+
+    .code-container::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .code-container::-webkit-scrollbar-track {
+      background: #1a1a1a;
+      border-radius: 3px;
+    }
+
+    body.light .code-container::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+
+    .code-container::-webkit-scrollbar-thumb {
+      background: #58a6ff;
+      border-radius: 3px;
+    }
+
+    body.light .code-container::-webkit-scrollbar-thumb {
+      background: #0969da;
+    }
+
+    pre {
+      margin: 0;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.55;
+      color: #c9d1d9;
+      white-space: pre;
+      overflow-wrap: normal;
+      overflow-x: auto;
+    }
+
+    body.light pre {
+      color: #c9d1d9;
+    }
+
+    .line {
+      display: block;
+      padding: 2px 4px;
+      border-radius: 3px;
+      transition: background 0.2s;
+    }
+
+    .line:hover {
+      background: rgba(88, 166, 255, 0.1) !important;
+    }
+
+    .line.has-keyword {
+      background: linear-gradient(90deg, rgba(88,166,255,0.08), transparent);
+      border-left: 2px solid rgba(88,166,255,0.3);
+    }
+
+    body.light .line.has-keyword {
+      background: linear-gradient(90deg, rgba(9,105,218,0.08), transparent);
+      border-left: 2px solid rgba(9,105,218,0.3);
+    }
+
+    .keyword { color: #ff7b72; font-weight: 600; }
+    .type { color: #ffa657; }
+    .string { color: #a5d6ff; }
+    .comment { color: #8b949e; }
+    .number { color: #79c0ff; }
+
+    body.light .keyword { color: #cf222e; font-weight: 600; }
+    body.light .type { color: #953800; }
+    body.light .string { color: #0a3069; }
+    body.light .comment { color: #6e7781; }
+    body.light .number { color: #0550ae; }
+
+    /* Mobile responsive */
+    @media (max-width: 768px) {
+      .main-container {
+        padding-right: 0;
+      }
+      
+      .card {
+        padding: 16px;
+      }
+      
+      .card-title {
+        font-size: 14px;
+      }
+      
+      .code-container {
+        max-height: 300px;
+        font-size: 12px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="header">
-    <h1>Best of Luck - DBMS Practicals</h1>
+    <h1>Best of Luck - Code Practicals</h1>
     <button class="theme-toggle" onclick="toggleTheme()">Light</button>
   </div>
 
-  <div class="container">
-    <div class="row" id="row1"></div>
-    <div class="row" id="row2"></div>
+  <div class="main-container">
+    <div class="cards-grid" id="cards-grid"></div>
   </div>
 
   <script>
@@ -130,21 +397,19 @@ heap_sort(arr)
 print("Sorted array:")
 print(arr)`
       }
+      // **Add more programs here as needed**
     ];
 
-    // [Keep all your original JavaScript functions exactly the same]
     function escHtml(s) {
       return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    // Update keywords to include C++ keywords
-    const keywords = /\\b(CREATE|TABLE|PRIMARY|KEY|VARCHAR2|NUMBER|INSERT|INTO|VALUES|SELECT|FROM|WHERE|UPDATE|DELETE|SET|OR|REPLACE|TRIGGER|AFTER|ON|FOR|EACH|ROW|BEGIN|END|PROCEDURE|CURSOR|OPEN|LOOP|FETCH|EXIT|WHEN|CLOSE|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|VIEW|INDEX|SEQUENCE|SYNONYM|ALTER|ADD|MODIFY|DROP|COLUMN|RENAME|TRUNCATE|NOT|NULL|UNIQUE|CHECK|CONSTRAINT|IN|AS|IS|START|WITH|INCREMENT|BY|void|int|return|if|else|for|while|class|public|private|include|using|namespace|main|cout|cin)\\b/g;
-    const types = /\\b(arr|n|i|largest|left|right|heapify|heapSort|swap|Employee|Department|Emp_Log|Emp_View|Emp_Dept_View|Emp|DBMS_OUTPUT|AVG|MAX)\\b/g;
+    const keywords = /\\b(void|int|return|if|else|for|while|class|public|private|include|using|namespace|main|cout|cin|def|def\\s+|print|range|len|swap|heapify|heapSort|arr|n|i|largest|left|right|CREATE|TABLE|PRIMARY|KEY|VARCHAR2|NUMBER|INSERT|INTO|VALUES|SELECT|FROM|WHERE|UPDATE|DELETE|SET)\\b/g;
+    const types = /\\b(arr|n|i|largest|left|right|Employee|Department|Emp_Log|Emp_View|Emp_Dept_View|Emp|DBMS_OUTPUT|AVG|MAX)\\b/g;
     const strRe = /("[^"]*"|'[^']*')/g;
     const commentRe = /(\/\/.*$|\/\*[\s\S]*?\*\/)/gm;
     const numberRe = /\\b(\\d+)\\b/g;
 
-    // [Rest of your original JavaScript stays the same - highlightLine, makeLines, toggleTheme, copyCode, etc.]
     function highlightLine(line) {
       let html = escHtml(line);
       html = html.replace(commentRe, '<span class="comment">$1</span>');
@@ -173,19 +438,24 @@ print(arr)`
 
     function copyCode(raw, btn) {
       navigator.clipboard.writeText(raw).then(() => {
-        btn.textContent = 'Copied!';
+        const original = btn.textContent;
+        btn.textContent = '✅ Copied!';
         btn.classList.add('copied');
         setTimeout(() => {
-          btn.textContent = 'Copy';
+          btn.textContent = original;
           btn.classList.remove('copied');
-        }, 1200);
+        }, 2000);
+      }).catch(() => {
+        btn.textContent = '❌ Failed';
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+        }, 1500);
       });
     }
 
-    const row1 = document.getElementById('row1');
-    const row2 = document.getElementById('row2');
-
-    programs.forEach((p, i) => {
+    // **Render cards**
+    const grid = document.getElementById('cards-grid');
+    programs.forEach((p) => {
       const card = document.createElement('div');
       card.className = 'card';
 
@@ -210,9 +480,7 @@ print(arr)`
 
       card.appendChild(header);
       card.appendChild(codeWrap);
-
-      if (i < 5) row1.appendChild(card);
-      else row2.appendChild(card);
+      grid.appendChild(card);
     });
   </script>
 </body>
