@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Best of Luck - Ds Practicals</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #0d1117;
+      color: #c9d1d9;
+      padding: 20px;
+      height: 100vh;
+      overflow: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light {
+      background: #ffffff;
+      color: #24292f;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #30363d;
+    }
+
+    body.light .header {
+      border-bottom-color: #d0d7de;
+    }
+
+    .header h1 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #c9d1d9;
+    }
+
+    body.light .header h1 {
+      color: #24292f;
+    }
+
+    .theme-toggle {
+      background: #21262d;
+      border: 1px solid #30363d;
+      color: #c9d1d9;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background: #30363d;
+    }
+
+    body.light .theme-toggle {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+      color: #24292f;
+    }
+
+    body.light .theme-toggle:hover {
+      background: #e1e4e8;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      height: calc(100vh - 110px);
+    }
+
+    .row {
+      display: flex;
+      gap: 14px;
+      /* Keep cards on a single line but allow them to shrink to fit the viewport (no horizontal scroll on rows) */
+      flex-wrap: nowrap;
+      align-items: flex-start;
+      width: 100%;
+      padding-bottom: 6px;
+      overflow: visible; /* ensure the row itself doesn't force scrolling */
+    }
+
+    .card {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 8px;
+      padding: 14px;
+      height: 300px;
+      /* Allow cards to grow/shrink so the whole row fits the viewport without scrolling */
+      flex: 1 1 calc(20% - 14px);
+      min-width: 0; /* important so children can shrink and avoid overflow */
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.3s;
+      box-sizing: border-box;
+    }
+
+    .card:hover {
+      border-color: #58a6ff;
+    }
+
+    body.light .card {
+      background: #f6f8fa;
+      border-color: #d0d7de;
+    }
+
+    body.light .card:hover {
+      border-color: #0969da;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #c9d1d9;
+    }
+
+    body.light .card-title {
+      color: #24292f;
+    }
+
+    .copy-btn {
+      background: #238636;
+      border: none;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: #2ea043;
+    }
+
+    .copy-btn.copied {
+      background: #1f6feb;
+    }
+
+    body.light .copy-btn {
+      background: #1a7f37;
+    }
+
+    body.light .copy-btn:hover {
+      background: #2da44e;
+    }
+
+    body.light .copy-btn.copied {
+      background: #0969da;
+    }
+
+    .code-container {
+      flex: 1;
+      overflow-y: auto;
+      /* Allow horizontal scrolling only inside the code block for long lines */
+      overflow-x: auto;
+      white-space: pre; /* keep long lines on one line so horizontal scroll will activate */
+      background: #000000;
+      padding: 10px;
+      border-radius: 6px;
+    }
+
+    /* Keep the code container black in both themes for requested look, but keep the light-theme border for separation */
+    body.light .code-container {
+      background: #000000;
+      border: 1px solid #d0d7de;
+    }
+
+    .code-container::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    .code-container::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .code-container::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 2px;
+    }
+
+    body.light .code-container::-webkit-scrollbar-thumb {
+      background: #d0d7de;
+    }
+
+    pre {
+      margin: 0;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #c9d1d9;
+      white-space: pre;
+    }
+
+    /* Force pre text to remain high-contrast on black code background */
+    body.light pre {
+      color: #c9d1d9;
+    }
+
+    /* Specific sizing: first row = 5-per-row (20%), second row = 4-per-row (25%) */
+    #row1 .card { flex: 0 0 calc(20% - 14px); }
+    #row2 .card { flex: 0 0 calc(25% - 14px); }
+
+    .line {
+      display: block;
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+
+    .line.has-keyword {
+      background: linear-gradient(90deg, rgba(88,166,255,0.08), transparent);
+      border-left: 2px solid rgba(88,166,255,0.3);
+    }
+
+    body.light .line.has-keyword {
+      background: linear-gradient(90deg, rgba(9,105,218,0.08), transparent);
+      border-left: 2px solid rgba(9,105,218,0.3);
+    }
+
+    .keyword { color: #ff7b72; font-weight: 600; }
+    .type { color: #ffa657; }
+    .string { color: #a5d6ff; }
+    .comment { color: #8b949e; }
+    .number { color: #79c0ff; }
+
+    body.light .keyword { color: #cf222e; font-weight: 600; }
+    body.light .type { color: #953800; }
+    body.light .string { color: #0a3069; }
+    body.light .comment { color: #6e7781; }
+    body.light .number { color: #0550ae; }
+
+    /* Mobile view: 2 cards per row with vertical scroll */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: row;
+        gap: 14px;
+        overflow-x: auto;
+      }
+
+      .row {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-width: calc(50% - 7px);
+        flex-shrink: 0;
+        align-items: stretch;
+      }
+
+      .card {
+        flex: 1;
+        min-height: 250px;
+      }
+    }
+
+            
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>Best of Luck - DBMS Practicals</h1>
+    <button class="theme-toggle" onclick="toggleTheme()">Light</button>
+  </div>
+
+  <div class="container">
+    <div class="row" id="row1"></div>
+    <div class="row" id="row2"></div>
+  </div>
+
+  <script>
+    const programs = [
+      {
+        def heapify(arr, n, i):
+    largest = i
+    left = 2 * i + 1
+    right = 2 * i + 2
+
+    if left < n and arr[left] > arr[largest]:
+        largest = left
+
+    if right < n and arr[right] > arr[largest]:
+        largest = right
+
+    if largest != i:
+        arr[i], arr[largest] = arr[largest], arr[i]
+        heapify(arr, n, largest)
+
+
+def heap_sort(arr):
+    n = len(arr)
+
+    # Build max heap
+    for i in range(n // 2 - 1, -1, -1):
+        heapify(arr, n, i)
+
+    # Heap sort
+    for i in range(n - 1, 0, -1):
+        arr[i], arr[0] = arr[0], arr[i]
+        heapify(arr, i, 0)
+
+
+arr = [12, 11, 13, 5, 6, 7]
+
+heap_sort(arr)
+
+print("Sorted array:")
+print(arr)
+    
+    
+    
+    
+    
+    
+    
+    #include <iostream>
+using namespace std;
+
+void heapify(int arr[], int n, int i)
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && arr[left] > arr[largest])
+        largest = left;
+
+    if (right < n && arr[right] > arr[largest])
+        largest = right;
+
+    if (largest != i)
+    {
+        swap(arr[i], arr[largest]);
+        heapify(arr, n, largest);
+    }
+}
+
+void heapSort(int arr[], int n)
+{
+    // Build max heap
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(arr, n, i);
+
+    // Heap sort
+    for (int i = n - 1; i > 0; i--)
+    {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
+    }
+}
+
+int main()
+{
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    heapSort(arr, n);
+
+    cout << "Sorted array:\n";
+
+    for (int i = 0; i < n; i++)
+        cout << arr[i] << " ";
+
+    return 0;
+}
+    }
+    );
+
+    function escHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const keywords = /\b(CREATE|TABLE|PRIMARY|KEY|VARCHAR2|NUMBER|INSERT|INTO|VALUES|SELECT|FROM|WHERE|UPDATE|DELETE|SET|OR|REPLACE|TRIGGER|AFTER|ON|FOR|EACH|ROW|BEGIN|END|PROCEDURE|CURSOR|OPEN|LOOP|FETCH|EXIT|WHEN|CLOSE|FOREIGN|REFERENCES|JOIN|INNER|LEFT|RIGHT|VIEW|INDEX|SEQUENCE|SYNONYM|ALTER|ADD|MODIFY|DROP|COLUMN|RENAME|TRUNCATE|NOT|NULL|UNIQUE|CHECK|CONSTRAINT|IN|AS|IS|START|WITH|INCREMENT|BY)\b/g;
+    const types = /\b(Employee|Department|Emp_Log|Emp_View|Emp_Dept_View|Emp|DBMS_OUTPUT|AVG|MAX)\b/g;
+    const strRe = /("[^"]*"|'[^']*')/g;
+    const commentRe = /(\/\/.*$)/gm;
+    const numberRe = /\b(\d+)\b/g;
+
+    function highlightLine(line) {
+      let html = escHtml(line);
+      html = html.replace(commentRe, '<span class="comment">$1</span>');
+      html = html.replace(strRe, '<span class="string">$1</span>');
+      html = html.replace(keywords, '<span class="keyword">$1</span>');
+      html = html.replace(types, '<span class="type">$1</span>');
+      html = html.replace(numberRe, '<span class="number">$1</span>');
+      return html;
+    }
+
+    function makeLines(code) {
+      const lines = code.split('\n');
+      return lines.map(l => {
+        const has = keywords.test(l) || types.test(l);
+        keywords.lastIndex = 0;
+        types.lastIndex = 0;
+        return `<div class="line${has ? ' has-keyword' : ''}">${highlightLine(l) || ' '}</div>`;
+      }).join('');
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('light');
+      const btn = document.querySelector('.theme-toggle');
+      btn.textContent = document.body.classList.contains('light') ? 'Dark' : 'Light';
+    }
+
+    function copyCode(raw, btn) {
+      navigator.clipboard.writeText(raw).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('copied');
+        }, 1200);
+      });
+    }
+
+    const row1 = document.getElementById('row1');
+    const row2 = document.getElementById('row2');
+
+    programs.forEach((p, i) => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const header = document.createElement('div');
+      header.className = 'card-header';
+
+      const title = document.createElement('div');
+      title.className = 'card-title';
+      title.textContent = p.title;
+
+      const btn = document.createElement('button');
+      btn.className = 'copy-btn';
+      btn.textContent = 'Copy';
+      btn.addEventListener('click', () => copyCode(p.code, btn));
+
+      header.appendChild(title);
+      header.appendChild(btn);
+
+      const codeWrap = document.createElement('div');
+      codeWrap.className = 'code-container';
+      codeWrap.innerHTML = '<pre>' + makeLines(p.code) + '</pre>';
+
+      card.appendChild(header);
+      card.appendChild(codeWrap);
+
+      if (i < 5) row1.appendChild(card);
+      else row2.appendChild(card);
+    });
+  </script>
+</body>
+</html>
